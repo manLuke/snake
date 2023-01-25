@@ -21,7 +21,13 @@ const speed = ref(120)
 const size = ref(25)
 
 const windowWidth = ref(window.innerWidth)
+const windowHeight = ref(window.innerHeight)
+
+// some weird css to make the app responsive
 const cssSize = computed(() => {
+  if ((windowHeight.value - 100 ) < windowWidth.value) {
+    return (windowHeight.value - 200) / (size.value + 1) + "px"
+  }
   if (windowWidth.value < 800) {
     return windowWidth.value / (size.value + 1) + "px"
   } else {
@@ -86,6 +92,7 @@ watch(
 onMounted(() => {
   window.addEventListener('resize', () => {
     windowWidth.value = window.innerWidth
+    windowHeight.value = window.innerHeight
   })
 })
 
@@ -107,9 +114,6 @@ onMounted(() => {
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #000;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
 }
 
 .page {
@@ -171,6 +175,14 @@ body {
 
   &:hover {
     color: #fff;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
   }
 }
 </style>
