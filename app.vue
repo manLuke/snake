@@ -3,7 +3,6 @@
     <nav class="navbar">
       <span>{{ `${score}/${record}` }}</span>
     </nav>
-    <h1>Snake {{ d }}</h1>
     <div class="snake-container" :style="{ '--size': cssSize }">
       <div v-for="x in size" class="snake-row" :key="x">
         <div v-for="y in size" class="snake-cell" :key="y"
@@ -138,6 +137,7 @@ body {
   @include flex-center;
   align-items: center;
   border: 3px solid #d40de2;
+  margin-top: 5rem;
 }
 
 .snake-cell {
