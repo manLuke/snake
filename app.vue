@@ -65,12 +65,12 @@ const endGame = () => {
 }
 
 const play = async () => {
-  const { position, eaten } = moveSnake(snake.value, food.value!, d.value)
   const oldD = d.value;
   await new Promise((resolve) => setTimeout(resolve, speed.value))
   if (isGoingBack(d.value, oldD)) {
     d.value = oldD;
   }
+  const { position, eaten } = moveSnake(snake.value, food.value!, d.value)
   if (isCollision(position, size.value) || isCollisionWithItself(position, snake.value)) {
     endGame()
     return
@@ -85,7 +85,7 @@ const play = async () => {
     snake.value.pop()
   }
   snake.value.unshift(position)
-  play()
+  window.requestAnimationFrame(play)
 }
 
 watch(
