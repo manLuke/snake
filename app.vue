@@ -47,6 +47,7 @@ const isFood = (x: number, y: number) => food.value?.x === x && food.value?.y ==
 
 const startGame = () => {
   if (playing.value) return;
+  playing.value = true
   score.value = 0;
   d.value = 0;
   snake.value = newSnake(size.value)
@@ -63,9 +64,12 @@ const endGame = () => {
 }
 
 const play = async () => {
-  playing.value = true
   const { position, eaten } = moveSnake(snake.value, food.value!, d.value)
+  const oldD = d.value;
   await new Promise((resolve) => setTimeout(resolve, speed.value))
+  if (isGoingBack(d.value, oldD)) {
+    d.value = oldD;
+  }
   if (isCollision(position, size.value) || isCollisionWithItself(position, snake.value)) {
     endGame()
     return
