@@ -58,6 +58,7 @@ const startGame = () => {
 const endGame = () => {
   playing.value = false
   d.value = 99
+  speed.value = 120
   if (setRecord(score.value)) {
     record.value = score.value;
   }
@@ -75,7 +76,10 @@ const play = async () => {
     return
   } else if (eaten) {
     food.value = newFood(snake.value, size.value)
-    score.value++;
+    if (speed.value >= 30) {
+      speed.value -= 2;
+    }
+    
   } else {
     snake.value.pop()
   }
