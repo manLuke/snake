@@ -24,8 +24,17 @@ export const newSnake = (size: number): Snake => {
   return snake;
 };
 
-export const isCollision = (c: Coordinate, size: number) =>c.x <= 0 || c.x > size || c.y <= 0 || c.y > size;
-export const isCollisionWithItself = (c: Coordinate, snake: Snake) => snake.some((s) => s.x === c.x && s.y === c.y);
+export const isCollision = (c: Coordinate, size: number) => c.x <= 0 || c.x > size || c.y <= 0 || c.y > size;
+export const isCollisionWithItself = (coordinate: Coordinate, snake: Snake) => {
+  // Check if the coordinate is inside the snake
+  const isInsideSnake = snake.some((snakeCoordinate) => (snakeCoordinate.x === coordinate.x && snakeCoordinate.y === coordinate.y))
+  // Check if the coordinate is not the head of the snake
+  const isNotHead = !(snake[0].x === coordinate.x && snake[0].y === coordinate.y)
+  // Check if the coordinate is not the tail of the snake
+  const isNotTail = !(snake[snake.length - 1].x === coordinate.x && snake[snake.length - 1].y === coordinate.y)
+  // Return true if the coordinate is inside the snake and not the head or the tail
+  return isInsideSnake && isNotHead && isNotTail
+}
 
 export const isGoingBack = (direction: number, lastDirection: number) => {
   return (
