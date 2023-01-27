@@ -1,6 +1,6 @@
 export const getDirection = () => {
   // up = 0, right = 1, down = 2, left = 3
-  const d = ref<number>(99);
+  const d = ref<number[]>([0]);
   let startX: number, startY: number;
 
   document.addEventListener('touchstart', (e) => {
@@ -15,15 +15,15 @@ export const getDirection = () => {
     const diffY = endY - startY;
     if (Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0) {
-        d.value = 1;
+        d.value.unshift(1);
       } else {
-        d.value = 3;
+        d.value.unshift(3);
       }
     } else {
       if (diffY > 0) {
-        d.value = 2;
+        d.value.unshift(2);
       } else {
-        d.value = 0;
+        d.value.unshift(0);
       }
     }
   });
@@ -32,19 +32,19 @@ export const getDirection = () => {
     switch (e.key) {
       case 'ArrowUp':
       case 'w':
-        d.value = 0;
+        d.value.unshift(0);
         break;
       case 'ArrowRight':
       case 'd':
-        d.value = 1;
+        d.value.unshift(1);
         break;
       case 'ArrowDown':
       case 's':
-        d.value = 2;
+        d.value.unshift(2);
         break;
       case 'ArrowLeft':
       case 'a':
-        d.value = 3;
+        d.value.unshift(3);
         break;
     }
   };

@@ -49,7 +49,7 @@ const startGame = () => {
   if (playing.value) return;
   playing.value = true
   score.value = 0;
-  d.value = 0;
+  d.value = [0];
   snake.value = newSnake(size.value)
   food.value = newFood(snake.value, size.value)
   play()
@@ -57,7 +57,6 @@ const startGame = () => {
 
 const endGame = () => {
   playing.value = false
-  d.value = 99
   speed.value = 120
   if (setRecord(score.value)) {
     record.value = score.value;
@@ -65,12 +64,14 @@ const endGame = () => {
 }
 
 const play = async () => {
-  const oldD = d.value;
+  const oldD = d.value[0];
   await new Promise((resolve) => setTimeout(resolve, speed.value))
-  if (isGoingBack(d.value, oldD)) {
-    d.value = oldD;
+  if (isGoingBack(d.value[0], oldD)) {
+    d.value = [getFirstValidDirection(d.value, oldD)];
+  } else {
+    d.value = [d.value[0]]
   }
-  const { position, eaten } = moveSnake(snake.value, food.value!, d.value)
+  const { position, eaten } = moveSnake(snake.value, food.value!, d.value[0])
   if (isCollision(position, size.value) || isCollisionWithItself(position, snake.value)) {
     endGame()
     return
@@ -91,7 +92,7 @@ const play = async () => {
 watch(
   () => d.value,
   () => {
-    if (!playing.value && d.value !== 99) {
+    if (!playing.value) {
       startGame()
       playing.value = true
     }
