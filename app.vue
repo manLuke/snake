@@ -25,7 +25,7 @@ const windowHeight = ref(window.innerHeight)
 
 // some weird css to make the app responsive
 const cssSize = computed(() => {
-  if ((windowHeight.value - 100 ) < windowWidth.value) {
+  if ((windowHeight.value - 100) < windowWidth.value) {
     return (windowHeight.value - 200) / (size.value + 1) + "px"
   }
   if (windowWidth.value < 800) {
@@ -58,6 +58,7 @@ const startGame = () => {
 const endGame = () => {
   playing.value = false
   speed.value = 120
+  d.value = [99]
   if (setRecord(score.value)) {
     record.value = score.value;
   }
@@ -81,7 +82,7 @@ const play = async () => {
     if (speed.value >= 22) {
       speed.value -= 2;
     }
-    
+
   } else {
     snake.value.pop()
   }
@@ -92,10 +93,13 @@ const play = async () => {
 watch(
   () => d.value,
   () => {
-    if (!playing.value) {
+    if (!playing.value && d.value[0] !== 99) {
       startGame()
       playing.value = true
     }
+  },
+  {
+    deep: true,
   }
 )
 
