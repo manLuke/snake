@@ -5,4 +5,4 @@ export type Coordinate = {
   y: number;
 };
 
-export type NewSnakePosition = { position: Coordinate; eaten: boolean };
+export type NewSnakePosition = { position: Coordinate; eaten: boolean, newD: number };

@@ -45,13 +45,13 @@ export const isGoingBack = (direction: number, lastDirection: number) => {
   );
 };
 
-export const getFirstValidDirection = (directions: number[], lastDirection: number) => {
+export const getFirstValidDirection = (directions: number[]): number => {
   for (let i = 0; i < directions.length; i++) {
-    if (!isGoingBack(directions[i], lastDirection)) {
+    if (!isGoingBack(directions[i], directions[directions.length - 1])) {
       return directions[i];
     }
   }
-  return lastDirection;
+  return directions[directions.length - 1];
 }
 
 export const isEating = (snake: Snake, food: Coordinate): boolean => snake[0].x === food.x && snake[0].y === food.y;
@@ -59,13 +59,14 @@ export const isEating = (snake: Snake, food: Coordinate): boolean => snake[0].x 
 export const moveSnake = (
   snake: Snake,
   food: Coordinate,
-  direction: number
+  directionArr: number[]
 ): NewSnakePosition => {
   const eaten = isEating(snake, food);
   const newPosition = {
     x: snake[0].x,
     y: snake[0].y,
   };
+  const direction = getFirstValidDirection(directionArr);
 
   switch (direction) {
     case 0:
@@ -85,6 +86,7 @@ export const moveSnake = (
   return {
     position: newPosition,
     eaten,
+    newD: direction,
   };
 };
 
