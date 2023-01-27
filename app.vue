@@ -68,6 +68,7 @@ const play = async () => {
   await new Promise((resolve) => setTimeout(resolve, speed.value))
   const { position, eaten, newD } = moveSnake(snake.value, food.value!, d.value)
   if (isCollision(position, size.value) || isCollisionWithItself(position, snake.value)) {
+    if (eaten) score.value++;
     endGame()
     return
   } else if (eaten) {
