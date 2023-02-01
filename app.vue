@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { Snake, Coordinate, NewSnakePosition } from './types'
 
 const playing = ref(false)
 const speed = ref(120)

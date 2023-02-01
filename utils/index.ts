@@ -1,5 +1,3 @@
-import { Snake, Coordinate, NewSnakePosition } from '../types';
-
 export const getRandomCoordinates = (max: number) => {
   return {
     x: Math.floor(Math.random() * (max - 1)) + 1,
