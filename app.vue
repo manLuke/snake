@@ -35,10 +35,10 @@ const cssSize = computed(() => {
 })
 
 const record = ref(getRecord());
-const score = ref<number>(0);
+const score = ref(0);
 
 const d = getDirection()
-const snake = ref<Snake>(newSnake(size.value))
+const snake = ref(newSnake(size.value))
 const food = ref<Coordinate>()
 
 const isSnake = (x: number, y: number) => snake.value.some((c) => c.x === x && c.y === y)
@@ -73,7 +73,7 @@ const play = async () => {
   } else if (eaten) {
     food.value = newFood(snake.value, size.value)
     score.value++;
-    if (speed.value >= 22) {
+    if (speed.value >= 40 && score >= 20) {
       speed.value -= 2;
     }
 
