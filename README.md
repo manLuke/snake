@@ -1,5 +1,5 @@
 # Snake
-Check it out [here](https://snake.tomas-page.co)
+Check it out [here](https://manluke.github.io/snake/)
 
 ## Author
 Tomáš Kácha
