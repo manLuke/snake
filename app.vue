@@ -73,7 +73,7 @@ const play = async () => {
   } else if (eaten) {
     food.value = newFood(snake.value, size.value)
     score.value++;
-    if (speed.value >= 40 && score >= 20) {
+    if (speed.value >= 40 && score.value >= 20) {
       speed.value -= 2;
     }
 
