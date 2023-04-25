@@ -5,8 +5,12 @@
     </nav>
     <div class="snake-container" :style="{ '--size': cssSize }">
       <div v-for="x in size" class="snake-row" :key="x">
-        <div v-for="y in size" class="snake-cell" :key="y"
-          :class="{ 'snake-active': isSnake(x, y), 'snake-food': isFood(x, y) }"></div>
+        <div
+          v-for="y in size"
+          class="snake-cell"
+          :key="y"
+          :class="{ 'snake-active': isSnake(x, y), 'snake-food': isFood(x, y) }"
+        ></div>
       </div>
     </div>
     <button class="btn-start" @click="startGame">Start</button>
@@ -14,97 +18,94 @@
 </template>
 
 <script setup lang="ts">
+const playing = ref(false);
+const speed = ref(120);
+const size = ref(25);
 
-const playing = ref(false)
-const speed = ref(120)
-const size = ref(25)
-
-const windowWidth = ref(window.innerWidth)
-const windowHeight = ref(window.innerHeight)
+const windowWidth = ref(window.innerWidth);
+const windowHeight = ref(window.innerHeight);
 
 // some weird css to make the app responsive
 const cssSize = computed(() => {
-  if ((windowHeight.value - 100) < windowWidth.value) {
-    return (windowHeight.value - 200) / (size.value + 1) + "px"
+  if (windowHeight.value - 100 < windowWidth.value) {
+    return (windowHeight.value - 200) / (size.value + 1) + "px";
   }
   if (windowWidth.value < 800) {
-    return windowWidth.value / (size.value + 1) + "px"
+    return windowWidth.value / (size.value + 1) + "px";
   } else {
-    return 800 / size.value + "px"
+    return 800 / size.value + "px";
   }
-})
+});
 
 const record = ref(getRecord());
 const score = ref(0);
 
-const d = getDirection()
-const snake = ref(newSnake(size.value))
-const food = ref<Coordinate>()
+const d = getDirection();
+const snake = ref(newSnake(size.value));
+const food = ref<Coordinate>();
 
-const isSnake = (x: number, y: number) => snake.value.some((c) => c.x === x && c.y === y)
-const isFood = (x: number, y: number) => food.value?.x === x && food.value?.y === y
+const isSnake = (x: number, y: number) => snake.value.some((c) => c.x === x && c.y === y);
+const isFood = (x: number, y: number) => food.value?.x === x && food.value?.y === y;
 
 const startGame = () => {
   if (playing.value) return;
-  playing.value = true
+  playing.value = true;
   score.value = 0;
   d.value = [0];
-  snake.value = newSnake(size.value)
-  food.value = newFood(snake.value, size.value)
-  play()
-}
+  snake.value = newSnake(size.value);
+  food.value = newFood(snake.value, size.value);
+  play();
+};
 
 const endGame = () => {
-  playing.value = false
-  speed.value = 120
-  d.value = [99]
+  playing.value = false;
+  speed.value = 120;
+  d.value = [99];
   if (setRecord(score.value)) {
     record.value = score.value;
   }
-}
+};
 
 const play = async () => {
-  await new Promise((resolve) => setTimeout(resolve, speed.value))
-  const { position, eaten, newD } = moveSnake(snake.value, food.value!, d.value)
+  await new Promise((resolve) => setTimeout(resolve, speed.value));
+  const { position, eaten, newD } = moveSnake(snake.value, food.value!, d.value);
   if (isCollision(position, size.value) || isCollisionWithItself(position, snake.value)) {
     if (eaten) score.value++;
-    endGame()
-    return
+    endGame();
+    return;
   } else if (eaten) {
-    food.value = newFood(snake.value, size.value)
+    food.value = newFood(snake.value, size.value);
     score.value++;
     if (speed.value >= 40 && score.value >= 20) {
       speed.value -= 2;
     }
-
   } else {
-    snake.value.pop()
+    snake.value.pop();
   }
-  snake.value.unshift(position)
-  d.value = [newD]
-  window.requestAnimationFrame(play)
-}
+  snake.value.unshift(position);
+  d.value = [newD];
+  window.requestAnimationFrame(play);
+};
 
 watch(
   () => d.value,
   () => {
     if (!playing.value && d.value[0] !== 99) {
-      startGame()
-      playing.value = true
+      startGame();
+      playing.value = true;
     }
   },
   {
     deep: true,
   }
-)
+);
 
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    windowWidth.value = window.innerWidth
-    windowHeight.value = window.innerHeight
-  })
-})
-
+  window.addEventListener("resize", () => {
+    windowWidth.value = window.innerWidth;
+    windowHeight.value = window.innerHeight;
+  });
+});
 </script>
 
 <style lang="scss">
@@ -121,7 +122,7 @@ onMounted(() => {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #000;
 }
 
